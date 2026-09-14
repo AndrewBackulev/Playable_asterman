@@ -21,8 +21,10 @@
       var screens={intro:document.getElementById('intro'),game:document.getElementById('game'),outro:document.getElementById('outro'),end:document.getElementById('end')};
       var v1=document.getElementById('video1'),v2=document.getElementById('video2'),start=document.getElementById('start');
       function show(name){Object.keys(screens).forEach(function(key){screens[key].classList.toggle('active',key===name)})}
+      function showGame(){v1.pause();show('game')}
       start.addEventListener('click',function(){start.style.display='none';show('intro');v1.play().catch(function(){v1.muted=true;v1.play()})});
-      v1.addEventListener('ended',function(){show('game')});
+      document.getElementById('intro').addEventListener('click',showGame);
+      v1.addEventListener('ended',showGame);
       window.addEventListener('message',function(event){if(event.data&&event.data.type==='build-to-escape-complete'){show('outro');v2.play().catch(function(){v2.muted=true;v2.play()})}});
       v2.addEventListener('ended',function(){show('end')});
       document.getElementById('cta').addEventListener('click',function(){window.open('https://example.com/build-to-escape','_blank')});
