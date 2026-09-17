@@ -3,29 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>Build to Escape — Full Review</title>
+  <title>Stay Safe During a Storm — Full Review</title>
   <style>
     *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#081522;font-family:Arial,sans-serif}.stage{position:relative;width:min(100vw,56.25dvh);height:min(177.778vw,100dvh);margin:auto;background:#081522;overflow:hidden}.screen{position:absolute;inset:0;display:none}.screen.active{display:block}video,iframe{border:0;width:100%;height:100%;display:block;background:#07101a}video{object-fit:cover}.start{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;background:linear-gradient(#0e273d99,#07111ddd)}.start button,.cta{border:0;border-radius:16px;background:#ffd55b;color:#55310d;font-size:clamp(24px,6vw,38px);font-weight:900;padding:18px 38px;box-shadow:0 7px #9c5c22;cursor:pointer}.screen.active.endcard{display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;background:linear-gradient(#173653bb,#0a1727dd),radial-gradient(circle at 50% 18%,#ef9c54,#16364e 53%,#08131e)}.endcard>div{padding:30px}.endcard h1{font-size:clamp(42px,11vw,70px);margin:0 0 14px;text-shadow:0 5px #18304b}.endcard p{font-size:clamp(20px,5vw,31px);font-weight:bold;margin:0 0 34px}.badge{font-size:58px;margin-bottom:16px}@media (max-aspect-ratio:9/16){.stage{width:100vw;height:177.778vw;max-height:100dvh}}
   </style>
 </head>
 <body>
-  <main class="stage" aria-label="Build to Escape full review">
-    <section id="intro" class="screen active"><video id="video1" playsinline preload="auto"><source src="Video%20Project_part1.mp4" type="video/mp4"></video></section>
-    <section id="game" class="screen"><iframe id="playable" src="game.html" title="Build to Escape playable"></iframe></section>
+  <main class="stage" aria-label="Stay Safe During a Storm full review">
+    <section id="ropes" class="screen active"><iframe id="rope-playable" src="ropes.html" title="Stay Safe During a Storm rope playable"></iframe></section>
+    <section id="video-one" class="screen"><video id="video1" playsinline preload="auto"><source src="Video%20Project_part1.mp4" type="video/mp4"></video></section>
+    <section id="planks" class="screen"><iframe id="plank-playable" src="planks.html" title="Build to Escape plank playable"></iframe></section>
     <section id="outro" class="screen"><video id="video2" playsinline preload="auto"><source src="Video%20Project_part2.mp4" type="video/mp4"></video></section>
-    <section id="end" class="screen endcard"><div><div class="badge">🪵⛵</div><h1>Build to Escape</h1><p>Help her escape!</p><button class="cta" id="cta">PLAY NOW</button></div></section>
+    <section id="end" class="screen endcard"><div><div class="badge">⛈️🪢</div><h1>Stay Safe During a Storm</h1><p>Keep her safe on the water!</p><button class="cta" id="cta">PLAY NOW</button></div></section>
     <div class="start" id="start"><button>START</button></div>
   </main>
   <script>
     (function(){
-      var screens={intro:document.getElementById('intro'),game:document.getElementById('game'),outro:document.getElementById('outro'),end:document.getElementById('end')};
+      var screens={ropes:document.getElementById('ropes'),videoOne:document.getElementById('video-one'),planks:document.getElementById('planks'),outro:document.getElementById('outro'),end:document.getElementById('end')};
       var v1=document.getElementById('video1'),v2=document.getElementById('video2'),start=document.getElementById('start');
       function show(name){Object.keys(screens).forEach(function(key){screens[key].classList.toggle('active',key===name)})}
-      function showGame(){v1.pause();show('game')}
-      start.addEventListener('click',function(){start.style.display='none';show('intro');v1.play().catch(function(){v1.muted=true;v1.play()})});
-      document.getElementById('intro').addEventListener('click',showGame);
-      v1.addEventListener('ended',showGame);
-      window.addEventListener('message',function(event){if(event.data&&event.data.type==='build-to-escape-complete'){show('outro');v2.play().catch(function(){v2.muted=true;v2.play()})}});
+      function configurePlankChapter(){
+        var doc=document.getElementById('plank-playable').contentDocument;
+        var chapter=doc&&doc.querySelector('.chapter span');
+        var sound=doc&&doc.querySelector('.sound');
+        if(chapter){
+          chapter.textContent='CHAPTER 2 / 2';
+          chapter.style.display='block';
+        }
+        if(sound)sound.style.display='none';
+      }
+      function showPlanks(){v1.pause();configurePlankChapter();show('planks')}
+      function playVideoOne(){show('videoOne');v1.play().catch(function(){v1.muted=true;v1.play()})}
+      start.addEventListener('click',function(){start.style.display='none';show('ropes')});
+      v1.addEventListener('ended',showPlanks);
+      window.addEventListener('message',function(event){
+        if(!event.data)return;
+        if(event.data.type==='storm-rope-complete')playVideoOne();
+        if(event.data.type==='build-to-escape-complete'){show('outro');v2.play().catch(function(){v2.muted=true;v2.play()})}
+      });
+      document.getElementById('plank-playable').addEventListener('load',configurePlankChapter);
       v2.addEventListener('ended',function(){show('end')});
       document.getElementById('cta').addEventListener('click',function(){window.open('https://example.com/build-to-escape','_blank')});
     }());

@@ -1,8 +1,8 @@
-# Build to Escape — Presentation Build
+# Stay Safe During a Storm — Presentation Build
 
 This folder is ready to publish as a GitHub Pages site. It includes the complete review flow:
 
-`Part 1 video → interactive plank merge game → Part 2 video → CTA`
+`Rope-matching playable (Chapter 1 / 2) → Part 1 video → plank-matching playable (Chapter 2 / 2) → Part 2 video → CTA`
 
 ## Publish on GitHub Pages
 
@@ -15,6 +15,6 @@ This folder is ready to publish as a GitHub Pages site. It includes the complete
 
 ## Notes
 
-- The first tap is intentional: it starts the first video with audio, which browsers require.
-- This is a presentation build, not the AppLovin submission file. It contains full-quality video assets and is about 112 MB.
+- The opening tap starts the rope-matching chapter. The following videos use the browser's user-gesture context when available and fall back to muted playback when required.
+- This is a presentation build, not the AppLovin submission file. It contains full-quality video assets and is about 57 MB.
 - The CTA currently opens the placeholder `https://example.com/build-to-escape`. Update that URL in `index.html` before presenting externally if a real store link is available.
